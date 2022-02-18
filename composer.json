@@ -1,0 +1,21 @@
+{
+    "name": "quasilyte/ksqlite3",
+    "description": "FFI-based SQLite library that can be used in both PHP and KPHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Iskander Sharipov",
+            "email": "quasilyte@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "vkcom/kphp-polyfills": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "KSQLite3\\": "src/"
+        }
+    }
+}
