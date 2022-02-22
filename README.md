@@ -144,7 +144,7 @@ $query = 'SELECT x, y FROM tab';
 if (!$ok) {
   handle_error($db->getLastError());
 }
-foreach ($query as $i => [$x, $y]) {
+foreach ($rows as $i => [$x, $y]) {
   var_dump([$i => "x=$x y=$y"]);
 }
 
@@ -156,7 +156,7 @@ foreach ($query as $i => [$x, $y]) {
 if (!$ok) {
   handle_error($db->getLastError());
 }
-foreach ($query as $i => $data) {
+foreach ($rows as $i => $data) {
   var_dump([$i => "x=$data['x'] y=$data['y']"]);
 }
 
@@ -169,7 +169,7 @@ $vars = [1 => 18];
 if (!$ok) {
   handle_error($db->getLastError());
 }
-foreach ($query as $i => $id) {
+foreach ($ids as $i => $id) {
   var_dump([$i => "id=$id"]);
 }
 ```
