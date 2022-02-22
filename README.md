@@ -14,6 +14,10 @@ When there is more than one result to be returned, a tuple like `tuple(T, bool)`
 
 If operation status is `false`, use `KSQLite::getLastError()` to get the actual error message.
 
+Note that you only need to care about closing the opened database object. There are no other
+resources you need to finalize. The API is designed in a way that you don't get any FFI-allocated
+object, so the library can manage these resources for you.
+
 * exec methods run the query while discarding their results
 * fetch methods collect and return results
 * query method is a low-level result set iteration privimite; fetch methods are built on that
