@@ -265,7 +265,7 @@ When to use: same advantages like with `execPrepared`, but here you can collect 
 ```php
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_id = :num_id',
-  function (KSQLiteParamsBinder $binder) use ($ids) {
+  function(KSQLiteParamsBinder $binder) use ($ids) {
     if ($binder->i >= count($ids)) {
       return false;
     }
