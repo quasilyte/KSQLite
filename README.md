@@ -12,7 +12,7 @@ All functions report error with `false` return value (operation status).
 
 When there is more than one result to be returned, a tuple like `tuple(T, bool)` is returned, where second tuple element is an operation status.
 
-If operation status is `false`, use `KSQLite::getLastError()` to the actual error message.
+If operation status is `false`, use `KSQLite::getLastError()` to get the actual error message.
 
 * exec methods run the query while discarding their results
 * fetch methods collect and return results
