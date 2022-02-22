@@ -31,9 +31,9 @@ class KInternal {
     case KSQLite::TYPE_NULL:
       return null;
     case KSQLite::TYPE_BLOB:
-        $blob = $lib->sqlite3_column_blob($stmt, $column);
-        $blob_size = $lib->sqlite3_column_bytes($stmt, $column);
-        return \FFI::string($blob, $blob_size);
+      $blob = $lib->sqlite3_column_blob($stmt, $column);
+      $blob_size = $lib->sqlite3_column_bytes($stmt, $column);
+      return \FFI::string($blob, $blob_size);
 
     default:
       // Should never happen.
