@@ -269,11 +269,11 @@ When to use: same advantages like with `execPrepared`, but here you can collect 
 ```php
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_id = :num_id',
-  function(KSQLiteParamsBinder $binder) use ($ids) {
-    if ($binder->i >= count($ids)) {
+  function(KSQLiteParamsBinder $b) use ($ids) {
+    if ($b->i >= count($ids)) {
       return false;
     }
-    $binder->bind(':num_id', $ids[$binder->i]);
+    $b->bind(':num_id', $ids[$b->i]);
     return true;
   },
   function(KSQLiteQueryContext $ctx) {
