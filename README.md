@@ -77,12 +77,12 @@ When to use: running a single SQL statement with different params, don't need th
 $values = [10, 20, 30, 40];
 $query = 'INSERT INTO fav_numbers(num_value) VALUES(?1)';
 $ok = $db->execPrepared($query, function(KSQLiteParamsBinder $b) use ($values) {
-  if ($b->i >= count($values)) {
+  if ($b->index >= count($values)) {
     return false; // No more rows to insert, stop now
   }
   // Bind ?1 to the specified value.
   // Use string keys, like ':num_value', to bind named params.
-  $b->bind(1, $values[$b->i]);
+  $b->bind(1, $values[$b->index]);
   return true; // Parameters bound, execute the query
 });
 if (!$ok) {
@@ -92,7 +92,7 @@ if (!$ok) {
 // Execute 10 inserts without bind vars.
 $query = "INSERT INTO fav_events(event_time) VALUES(time('now'))";
 $ok = $db->execPrepared($query, function(KSQLiteParamsBinder $b) {
-  return $b->i < 10;
+  return $b->index < 10;
 });
 if (!$ok) {
   handle_error($db->getLastError());
@@ -103,7 +103,7 @@ if (!$ok) {
 // N in advance.
 $query = "INSERT INTO important_data(x, y) VALUES(:x, :y)";
 $ok = $db->execPrepared($query, function(KSQLiteParamsBinder $b) use ($stream) {
-  // Note: we're not even using $b->i here as our data stream is statefull
+  // Note: we're not even using $b->index here as our data stream is statefull
   // and it knows which item we're processing right now.
   if (!$stream->hasMore()) {
     return false;
@@ -270,10 +270,10 @@ When to use: same advantages like with `execPrepared`, but here you can collect 
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_id = :num_id',
   function(KSQLiteParamsBinder $b) use ($ids) {
-    if ($b->i >= count($ids)) {
+    if ($b->index >= count($ids)) {
       return false;
     }
-    $b->bind(':num_id', $ids[$b->i]);
+    $b->bind(':num_id', $ids[$b->index]);
     return true;
   },
   function(KSQLiteQueryContext $ctx) {

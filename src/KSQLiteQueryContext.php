@@ -7,9 +7,9 @@ namespace KSQLite;
  */
 class KSQLiteQueryContext {
   /**
-   * $i holds the number of the current data row.
+   * $index holds the number of the current data row.
    */
-  public int $i = 0;
+  public int $index = 0;
 
   /**
    * In prepared-like APIs, where several queries can be executed using

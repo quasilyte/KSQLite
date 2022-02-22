@@ -7,15 +7,15 @@ namespace KSQLite;
  */
 class KSQLiteParamsBinder {
   /**
-   * $i is a query to be executed index.
+   * $index is a query to be executed index.
    *
    * This value starts from 0 for the first query,
    * then it's increased by 1 per every query executed.
    * It's useful when using array-like bind var sources.
    * 
-   * Checking $i === 0 reports whether this is a first query binding.
+   * Checking $index === 0 reports whether this is a first query binding.
    */
-  public int $i = 0;
+  public int $index = 0;
 
   private $params = [];
 
