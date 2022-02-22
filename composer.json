@@ -1,5 +1,5 @@
 {
-    "name": "quasilyte/ksqlite3",
+    "name": "quasilyte/ksqlite",
     "description": "FFI-based SQLite library that can be used in both PHP and KPHP",
     "type": "library",
     "license": "MIT",
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "KSQLite3\\": "src/"
+            "KSQLite\\": "src/"
         }
     }
 }
