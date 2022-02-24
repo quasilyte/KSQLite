@@ -95,7 +95,7 @@ class KSQLite {
    * @return bool operation status; use getLastError if false is returned
    */
   public function execPrepared(string $sql, callable $bind_params): bool {
-    return $this->doQuery($sql, $bind_params, function ($stmt, int $query_index) {
+    return $this->doQuery($sql, $bind_params, function($stmt, int $query_index) {
       $retcode = $this->lib->sqlite3_step($stmt);
         if ($retcode !== KInternal::DONE && $retcode !== KInternal::ROW) {
           $this->last_error = $this->lib->sqlite3_errstr($retcode);
@@ -150,7 +150,7 @@ class KSQLite {
       if ($b->query_index !== 0) { return false; }
       foreach ($params as $k => $v) { $b->bind($k, $v); }
       return true;
-    }, function (KSQLiteQueryContext $ctx) use ($result) {
+    }, function(KSQLiteQueryContext $ctx) use ($result) {
       $num_cols = $ctx->numColumns();
       if ($num_cols !== 1) {
         $this->last_error = "expected 1 column, got $num_cols";
@@ -188,7 +188,7 @@ class KSQLite {
    * @return bool operation status; use getLastError if false is returned
    */
   public function queryPrepared(string $sql, callable $bind_params, callable $row_func) {
-    return $this->doQuery($sql, $bind_params, function ($stmt, int $query_index) use ($row_func) {
+    return $this->doQuery($sql, $bind_params, function($stmt, int $query_index) use ($row_func) {
       /** @var ?KSQLiteQueryContext */
       $ctx = null;
       $data_count = -1;
@@ -236,7 +236,7 @@ class KSQLite {
       if ($b->query_index !== 0) { return false; }
       foreach ($params as $k => $v) { $b->bind($k, $v); }
       return true;
-    }, function (KSQLiteQueryContext $ctx) use ($result, $data_map_func) {
+    }, function(KSQLiteQueryContext $ctx) use ($result, $data_map_func) {
       $result->values[] = $data_map_func($ctx);
     });
     return tuple($result->values, $ok);
@@ -248,7 +248,7 @@ class KSQLite {
       if ($b->query_index !== 0) { return false; }
       foreach ($params as $k => $v) { $b->bind($k, $v); }
       return true;
-    }, function (KSQLiteQueryContext $ctx) use ($result, $assoc) {
+    }, function(KSQLiteQueryContext $ctx) use ($result, $assoc) {
       if ($ctx->index !== 0) {
         $this->last_error = 'got more than 1 result rowset';
         $ctx->stop();
@@ -269,7 +269,7 @@ class KSQLite {
    * @param callable(ffi_cdata<sqlite, struct sqlite3_stmt*>,int):boolean $result_func
    */
   private function doQuery(string $sql, callable $bind_params, callable $result_func): bool {
-    return $this->doWithStatement($sql, function ($stmt) use ($bind_params, $result_func) {
+    return $this->doWithStatement($sql, function($stmt) use ($bind_params, $result_func) {
       $binder = new KSQLiteParamsBinder();
       $query_seq = 0;
 

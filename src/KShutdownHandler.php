@@ -17,7 +17,7 @@ class KShutdownHandler {
 
   private static function register() {
     self::$registered = true;
-    register_shutdown_function(function () {
+    register_shutdown_function(function() {
       foreach (self::$databases as $db) {
         // Even if $db is closed already, it's OK to do
         // it again ($db will remember its state).

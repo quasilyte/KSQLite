@@ -88,7 +88,7 @@ if (!$ok) {
 // Since there is only one bind, $query_seq will be 0 for all rows.
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_value >= :num_value',
-  function (KSQLiteParamsBinder $binder) {
+  function(KSQLiteParamsBinder $binder) {
     if ($binder->query_index !== 0) {
       return false;
     }
@@ -115,7 +115,7 @@ var_dump(['ids' => $ids]);
 
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_id = :num_id',
-  function (KSQLiteParamsBinder $binder) use ($ids) {
+  function(KSQLiteParamsBinder $binder) use ($ids) {
     if ($binder->query_index >= count($ids)) {
       return false;
     }
