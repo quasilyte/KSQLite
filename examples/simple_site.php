@@ -113,7 +113,7 @@ function build_page_html(array $tasks) {
   $html .= '<p><label><input type="text" value="5.0" name="task_priority"/> Task priority</label></p>';
   $html .= '<p><label><input type="text" name="task_name"/> Task name</label></p>';
   $html .= '<p><label><input type="text" name="task_description"/> Task description</label></p>';
-  $html .= '<p><input style="width: 16em" class="btn btn-primary" type="submit" value="Create task"/></p>';
+  $html .= '<p><input style="width: 16em" class="btn btn-success" type="submit" value="Create task"/></p>';
   $html .= '</form>';
   $html .= '<form action="simple_site.php" method="post">';
   $html .= '<p><input type="text" value="1" name="delete_all" hidden=true/></p>';
