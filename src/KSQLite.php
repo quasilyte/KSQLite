@@ -340,6 +340,8 @@ class KSQLite {
       } else if (is_bool($value)) {
         $value_type = KSQLite::TYPE_INTEGER;
         $converted_value = $value ? 1 : 0;
+      } else if (is_int($value)) {
+        $value_type = KSQLite::TYPE_INTEGER;
       } else if (is_float($value)) {
         $value_type = KSQLite::TYPE_REAL;
       } else if (is_string($value)) {
