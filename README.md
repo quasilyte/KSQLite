@@ -11,16 +11,18 @@ KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 Running examples with PHP:
 
 ```bash
-php -d opcache.enable_cli=1\
-    -d opcache.preload=./examples/preload.php\
-    -f ./examples/transactions.php
+$ php -d opcache.enable_cli=1\
+      -d opcache.preload=./examples/preload.php\
+      -f ./examples/transactions.php
 ```
 
 Running examples with KPHP:
 
 ```bash
-kphp --enable-ffi --mode cli --composer-root $(pwd)\
-     ./examples/transactions.php
+# Step 1: compile the example:
+$ kphp --enable-ffi --mode cli --composer-root $(pwd) ./examples/transactions.php
+# Step 2: run the binary:
+$ ./kphp_out/cli
 ```
 
 ## API reference
