@@ -24,7 +24,7 @@ class KInternal {
     switch ($typ) {
     case KSQLite::TYPE_INTEGER:
       return $lib->sqlite3_column_int64($stmt, $column);
-    case KSQLite::TYPE_FLOAT:
+    case KSQLite::TYPE_REAL:
       return $lib->sqlite3_column_double($stmt, $column);
     case KSQLite::TYPE_TEXT:
       return $lib->sqlite3_column_text($stmt, $column);
@@ -45,8 +45,8 @@ class KInternal {
     switch ($type) {
     case KSQLite::TYPE_INTEGER:
       return 'integer';
-    case KSQLite::TYPE_FLOAT:
-      return 'float';
+    case KSQLite::TYPE_REAL:
+      return 'real';
     case KSQLite::TYPE_TEXT:
       return 'text';
     case KSQLite::TYPE_BLOB:

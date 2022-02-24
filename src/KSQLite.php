@@ -4,7 +4,7 @@ namespace KSQLite;
 
 class KSQLite {
   public const TYPE_INTEGER = 1;
-  public const TYPE_FLOAT = 2;
+  public const TYPE_REAL = 2;
   public const TYPE_TEXT = 3;
   public const TYPE_BLOB = 4;
   public const TYPE_NULL = 5;
@@ -335,12 +335,17 @@ class KSQLite {
       
       if ($value === null) {
         $retcode = $this->lib->sqlite3_bind_null($stmt, $index);
+      } else if (is_bool($value)) {
+        $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, $value ? 1 : 0);
       } else if (is_int($value)) {
         $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, $value);
       } else if (is_float($value)) {
         $retcode = $this->lib->sqlite3_bind_double($stmt, $index, $value);
       } else if (is_string($value)) {
         $retcode = $this->lib->sqlite3_bind_text($stmt, $index, $value, strlen($value), KInternal::DATA_TRANSIENT);
+      } else if (is_array($value) && count($value) === 1 && array_key_exists(0, $value) && is_string($value[0])) {
+        $blob = (string)$value[0];
+        $retcode = $this->lib->sqlite3_bind_blob($stmt, $index, $blob, strlen($blob), KInternal::DATA_TRANSIENT);
       } else {
         $this->last_error = "binding $key to unsupported value of type " . gettype($value);
         return false;
