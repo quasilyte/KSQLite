@@ -24,6 +24,8 @@ class KSQLite {
       KShutdownHandler::pushDatabase($this);
     }
 
+    // See https://github.com/VKCOM/kphp/issues/457
+    // Using this hack to make all methods reachable.
     if (false) {
       $this->exec('');
       $this->execPrepared('', null);
