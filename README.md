@@ -18,6 +18,7 @@ $ composer require quasilyte/ksqlite
 * [quick_start.php](examples/quick_start.php) - a simple overview of the API basics
 * [prepared_statements.php](examples/prepared_statements.php) - how to re-use a single statement for multiple queries
 * [transactions.php](examples/transactions.php) - how to use transactions plus some best practices
+* [simple_site.php](examples/simple_site.php) - serving a simple TODO app using SQLite as a database
 
 Running examples with PHP:
 

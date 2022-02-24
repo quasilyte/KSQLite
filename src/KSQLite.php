@@ -292,6 +292,12 @@ class KSQLite {
           }
         }
         $query_params = $binder->_getParams();
+        if (array_key_exists(0, $query_params)) {
+          // Numeric params start with 1.
+          // Give users a chance to notice their mistakes earlier.
+          $this->last_error = 'tried to bind param with index 0, this is probably a mistake';
+          return false;
+        }
         if (!$this->bindParams($stmt, $query_params)) {
           return false;
         }
@@ -327,8 +333,14 @@ class KSQLite {
         $index = (int)$key;
       }
       
-      if (is_int($value)) {
+      if ($value === null) {
+        $retcode = $this->lib->sqlite3_bind_null($stmt, $index);
+      } else if (is_int($value)) {
         $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, $value);
+      } else if (is_float($value)) {
+        $retcode = $this->lib->sqlite3_bind_double($stmt, $index, $value);
+      } else if (is_string($value)) {
+        $retcode = $this->lib->sqlite3_bind_text($stmt, $index, $value, strlen($value), KInternal::DATA_TRANSIENT);
       } else {
         $this->last_error = "binding $key to unsupported value of type " . gettype($value);
         return false;
