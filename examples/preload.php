@@ -7,6 +7,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use KSQLite3\KSQLite3;
+use KSQLite\KSQLite;
 
-KSQLite3::loadFFI();
+KSQLite::loadFFI();

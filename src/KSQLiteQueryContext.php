@@ -13,10 +13,10 @@ class KSQLiteQueryContext {
 
   /**
    * In prepared-like APIs, where several queries can be executed using
-   * the same SQL statement, $query_seq reports the current query number.
+   * the same SQL statement, $query_index reports the current query number.
    * For non-prepared calls this value is always 0 (first and only execution).
    */
-  public int $query_seq = 0;
+  public int $query_index = 0;
 
   private bool $stop = false;
   private int $row_data_count = 0;
