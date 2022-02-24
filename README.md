@@ -4,7 +4,8 @@ KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 
 ## Examples
 
-> TODO
+* [quick_start.php](examples/quick_start.php) - a simple overview of the API basics
+* [prepared_statements](examples/prepared_statements.php) - how to re-use a single statement for multiple queries
 
 ## API reference
 
@@ -64,11 +65,11 @@ if (!$db->exec($query, $params)) {
 ### execPrepared
 
 ```php
-function execPrepared(string $sql, callable $bind_params): bool
+function execPrepared(string $sql, $bind_params_func): bool
 ```
 
 * `$sql` SQL query string with optional bind var placeholders
-* `$bind_params` a callback that binds variables for the query
+* `$bind_params_func` a callback that binds variables for the query
 
 When to use: running a single SQL statement with different params, don't need the results.
 
@@ -77,12 +78,12 @@ When to use: running a single SQL statement with different params, don't need th
 $values = [10, 20, 30, 40];
 $query = 'INSERT INTO fav_numbers(num_value) VALUES(?1)';
 $ok = $db->execPrepared($query, function(KSQLiteParamsBinder $b) use ($values) {
-  if ($b->index >= count($values)) {
+  if ($b->query_index >= count($values)) {
     return false; // No more rows to insert, stop now
   }
   // Bind ?1 to the specified value.
   // Use string keys, like ':num_value', to bind named params.
-  $b->bind(1, $values[$b->index]);
+  $b->bind(1, $values[$b->query_index]);
   return true; // Parameters bound, execute the query
 });
 if (!$ok) {
@@ -92,7 +93,7 @@ if (!$ok) {
 // Execute 10 inserts without bind vars.
 $query = "INSERT INTO fav_events(event_time) VALUES(time('now'))";
 $ok = $db->execPrepared($query, function(KSQLiteParamsBinder $b) {
-  return $b->index < 10;
+  return $b->query_index < 10;
 });
 if (!$ok) {
   handle_error($db->getLastError());
@@ -125,14 +126,14 @@ in some helper functions.
 ### fetch
 
 ```php
-function fetch(string $sql, array $params = [], callable $row_func = null): tuple(mixed, bool)
+function fetch(string $sql, array $params = [], $row_func = null): tuple(mixed, bool)
 ```
 
 * `$sql` SQL query string with optional bind var placeholders
 * `$params` bind variables for the query
 * `$row_func` a callback that is called for every row, its return value is collected
 
-If `$row_func` is null, default mapping behavior is used (identity function).
+If `$row_func` is null, default mapping behavior is used (`rowAssoc`).
 
 When to use: execute a query once, collect results.
 
@@ -202,6 +203,10 @@ Note: if query returns more than one row, error will be reported.
 Either use `LIMIT 1` or other ways to request only 1 row from the database,
 or use `fetch()` method and skip rest of the rows explicitely.
 
+### fetchRowAssoc
+
+Like `fetchRow`, but result array has column name keys instead of indexes.
+
 ### fetchColumn
 
 ```php
@@ -227,7 +232,7 @@ more than one value, error will be reported.
 ### query
 
 ```php
-function query(string $sql, array $params, callable $row_func): bool
+function query(string $sql, array $params, $row_func): bool
 ```
 
 * `$sql` SQL query string with optional bind var placeholders
@@ -257,11 +262,11 @@ $handler->processData($result->values); // Work with unboxed [K]PHP array
 ### queryPrepared
 
 ```php
-function queryPrepared(string $sql, callable $bind_params, callable $row_func): bool
+function queryPrepared(string $sql, $bind_params_func, $row_func): bool
 ```
 
 * `$sql` SQL query string with optional bind var placeholders
-* `$bind_params` a callback that binds variables for the query
+* `$bind_params_func` a callback that binds variables for the query
 * `$row_func` a void-result callback that is called for every row
 
 When to use: same advantages like with `execPrepared`, but here you can collect the results.
@@ -270,16 +275,16 @@ When to use: same advantages like with `execPrepared`, but here you can collect 
 $ok = $db->queryPrepared(
   'SELECT * FROM fav_numbers WHERE num_id = :num_id',
   function(KSQLiteParamsBinder $b) use ($ids) {
-    if ($b->index >= count($ids)) {
+    if ($b->query_index >= count($ids)) {
       return false;
     }
-    $b->bind(':num_id', $ids[$b->index]);
+    $b->bind(':num_id', $ids[$b->query_index]);
     return true;
   },
   function(KSQLiteQueryContext $ctx) {
-    // $ctx->row_seq is 0 for the first prepared query execution.
-    // The second execution will have $row_seq=1 and so on.
-    var_dump($ctx->row_seq . '=>' . $ctx->rowDataAssoc()['num_value']);
+    // $ctx->query_index is 0 for the first prepared query execution.
+    // The second execution will have $query_index=1 and so on.
+    var_dump($ctx->query_index . '=>' . $ctx->rowDataAssoc()['num_value']);
   }
 );
 if (!$ok) {
