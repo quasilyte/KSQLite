@@ -32,8 +32,11 @@ if (!$db->exec('DELETE FROM fav_numbers')) {
 // The easiest way to bind parameters is to do so by index.
 // Note: the indexes start from 1.
 $ok = $db->exec('INSERT INTO fav_numbers(num_value) VALUES (?1), (?2)', [
-  1 => 100,
-  2 => 200,
+  // Sometimes your source values can differ from the SQL table types.
+  // Or you may want to bind string to BLOB instead of TEXT.
+  // In these cases, explicitly typed bindings can be used.
+  1 => [KSQLite::TYPE_INTEGER, 100.6],
+  2 => [KSQLite::TYPE_INTEGER, 200.1],
 ]);
 if (!$ok) {
   handle_error(__LINE__, 'exec/insert', $db->getLastError());

@@ -28,28 +28,29 @@ class KSQLiteParamsBinder {
    * 
    * The $key should match the associated query params.
    * 
-   * $value types mapping:
+   * Automatic $value types mapping:
    * - bool: INTEGER type
    * - int: INTEGER type
    * - float: REAL type
    * - string: TEXT type
    * - null value: NULL
    * 
-   * Note that you can't bind BLOB-typed values with this method.
-   * See bindBlob().
+   * To bind a blob value, use explicit param type notation: [$type, $value]
+   * where $type is one of the KSQLite type constants, like KSQLite::TYPE_BLOB.
+   * 
+   * Here is an example:
+   *
+   * $db->fetch($query, [
+   *   ':binary_text' => [KSQLite::TYPE_BLOB, $data],
+   *   ':string_text' => [KSQLite::TYPE_TEXT, $s],
+   *   ':auto_detected_int' => 530,
+   * ]);
    * 
    * @param int|string $key
    * @param mixed $value
    */
   public function bind($key, $value) {
     $this->params[$key] = $value;
-  }
-
-  /**
-   * bindBlob is like bind(), but dedicated to binding BLOB-typed values.
-   */
-  public function bindBlob($key, string $value) {
-    $this->params[$key] = [$value];
   }
 
   public function _reset() {

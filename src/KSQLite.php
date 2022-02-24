@@ -332,23 +332,36 @@ class KSQLite {
       } else {
         $index = (int)$key;
       }
-      
+
+      $converted_value = $value;
+
       if ($value === null) {
-        $retcode = $this->lib->sqlite3_bind_null($stmt, $index);
+        $value_type = KSQLite::TYPE_NULL;
       } else if (is_bool($value)) {
-        $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, $value ? 1 : 0);
-      } else if (is_int($value)) {
-        $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, $value);
+        $value_type = KSQLite::TYPE_INTEGER;
+        $converted_value = $value ? 1 : 0;
       } else if (is_float($value)) {
-        $retcode = $this->lib->sqlite3_bind_double($stmt, $index, $value);
+        $value_type = KSQLite::TYPE_REAL;
       } else if (is_string($value)) {
-        $retcode = $this->lib->sqlite3_bind_text($stmt, $index, $value, strlen($value), KInternal::DATA_TRANSIENT);
-      } else if (is_array($value) && count($value) === 1 && array_key_exists(0, $value) && is_string($value[0])) {
-        $blob = (string)$value[0];
-        $retcode = $this->lib->sqlite3_bind_blob($stmt, $index, $blob, strlen($blob), KInternal::DATA_TRANSIENT);
+        $value_type = KSQLite::TYPE_TEXT;
+      } else if (is_array($value) && count($value) === 2) {
+        $value_type = $value[0];
+        $converted_value = $value[1];
       } else {
         $this->last_error = "binding $key to unsupported value of type " . gettype($value);
         return false;
+      }
+
+      if ($value_type === KSQLite::TYPE_NULL) {
+        $retcode = $this->lib->sqlite3_bind_null($stmt, $index);
+      } else if ($value_type === KSQLite::TYPE_INTEGER) {
+        $retcode = $this->lib->sqlite3_bind_int64($stmt, $index, (int)$converted_value);
+      } else if ($value_type === KSQLite::TYPE_REAL) {
+        $retcode = $this->lib->sqlite3_bind_double($stmt, $index, (float)$converted_value);
+      } else if ($value_type === KSQLite::TYPE_BLOB) {
+        $retcode = $this->lib->sqlite3_bind_blob($stmt, $index, (string)$converted_value, strlen($converted_value), KInternal::DATA_TRANSIENT);
+      } else {
+        $retcode = $this->lib->sqlite3_bind_text($stmt, $index, (string)$converted_value, strlen($converted_value), KInternal::DATA_TRANSIENT);
       }
       if ($retcode !== KInternal::OK) {
         $this->last_error = "binding $key: " . $this->lib->sqlite3_errstr($retcode);
