@@ -1,5 +1,5 @@
 #define FFI_SCOPE "sqlite"
-#define FFI_LIB "libsqlite3.so.0"
+#define FFI_LIB "libsqlite3"
 
 typedef struct sqlite3 sqlite3;
 typedef struct sqlite3_stmt sqlite3_stmt;
