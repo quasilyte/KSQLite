@@ -1,8 +1,8 @@
-# Installation: Debian/Ubuntu example
+# Installation: Debian/Ubuntu
 
 ```bash
-$ sudo apt install sqlite3
 $ composer require quasilyte/ksqlite
+$ sudo apt install sqlite3
 ```
 
 Now we need to make sure that KPHP/PHP will find the installed library.

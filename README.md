@@ -4,14 +4,27 @@ KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 
 ## Installation
 
-1. Install sqlite3 in your system, it must be accessible via `dlopen`
+1. Install libsqlite3 in your system, it must be accessible via `dlopen`
 2. Install this composer package to use KSQLite class inside your code
 
-See [Ubuntu/Debian installation guide](docs/install_deb.md) for more details.
+* [Ubuntu/Debian installation guide](docs/install_deb.md)
+* [MacOS installation guide](docs/install_macos.md)
+
+Below is a platform-agnostic overview.
 
 ```bash
+# 1. Install the composer package itself.
 $ composer require quasilyte/ksqlite
+
+# 2. Install libsqlite3 into your system.
+# We need libsqlite3.so/libsqlite3.dll/libsqlite.dylib files to be available.
+
+# 3. Make sure your system dynamic library loader can find the library
+# with "libsqlite3" path (without suffixes).
+# MacOS and Linux use dlopen(), Windows uses LoadLibrary.
 ```
+
+> Note: KPHP doesn't work on Windows yet.
 
 ## Examples
 
