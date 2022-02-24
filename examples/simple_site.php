@@ -103,43 +103,52 @@ function insert_task(KSQLite $db, $task): string {
 }
 
 function build_page_html(array $tasks) {
-  $html = '';
-
-  $html .= get_site_styles();
-
-  $html .= '<fieldset>';
-  $html .= '<legend>Manage tasks</legend>';
-  $html .= '<form action="simple_site.php" method="post">';
-  $html .= '<p><label><input type="text" value="5.0" name="task_priority"/> Task priority</label></p>';
-  $html .= '<p><label><input type="text" name="task_name"/> Task name</label></p>';
-  $html .= '<p><label><input type="text" name="task_description"/> Task description</label></p>';
-  $html .= '<p><input style="width: 16em" class="btn btn-success" type="submit" value="Create task"/></p>';
-  $html .= '</form>';
-  $html .= '<form action="simple_site.php" method="post">';
-  $html .= '<p><input type="text" value="1" name="delete_all" hidden=true/></p>';
-  $html .= '<p><input style="width: 16em" class="btn btn-danger" type="submit" value="Delete all tasks"/></p>';
-  $html .= '</form>';
-  $html .= '</fieldset>';
-
-  $html .= 'Created tasks:<br>';
-  $html .= '<table class="table">';
-  $html .= '<th>Number</th>';
-  $html .= '<th>Created at</th>';
-  $html .= '<th>Priority</th>';
-  $html .= '<th>Name</th>';
-  $html .= '<th>Description</th>';
+  $rows_html = '';
   foreach ($tasks as $i => $task) {
     $num = $i + 1;
     $date = date(DATE_ATOM, $task['task_creation_time']);
-    $html .= '<tr>';
-    $html .= "<td>$num</td>";
-    $html .= "<td>$date</td>";
-    $html .= "<td>$task[task_priority]</td>";
-    $html .= "<td>$task[task_name]</td>";
-    $html .= "<td>$task[task_description]</td>";
-    $html .= '</tr>';
+    $rows_html .= '<tr>';
+    $rows_html .= "<td>$num</td>";
+    $rows_html .= "<td>$date</td>";
+    $rows_html .= "<td>$task[task_priority]</td>";
+    $rows_html .= "<td>$task[task_name]</td>";
+    $rows_html .= "<td>$task[task_description]</td>";
+    $rows_html .= '</tr>';
   }
-  $html .= '</table>';
+
+  $css = get_site_styles();
+  $html = "
+    <!DOCTYPE HTML>
+    <head>
+      $css
+    </head>
+    <body>
+      <fieldset>
+        <legend>Manage tasks</legend>
+        <form action='simple_site.php' method='post'>
+          <p><label><input type='text' value='5.0' name='task_priority'/> Task priority</label></p>
+          <p><label><input type='text' name='task_name'/> Task name</label></p>
+          <p><label><input type='text' name='task_description'/> Task description</label></p>
+          <p><input style='width: 16em' class='btn btn-success' type='submit' value='Create task'/></p>
+        </form>
+        <form action='simple_site.php' method='post'>
+          <p><input type='text' value='1' name='delete_all' hidden=true/></p>
+          <p><input style='width: 16em' class='btn btn-danger' type='submit' value='Delete all tasks'/></p>
+        </form>
+      </fieldset>
+      Created tasks:<br>
+      <table class='table'>
+        <tr>
+          <th>Number</th>
+          <th>Created at</th>
+          <th>Priority</th>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+        $rows_html
+      </table>
+    </body>
+  ";
 
   return $html;
 }
