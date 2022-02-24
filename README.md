@@ -2,6 +2,17 @@
 
 KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 
+## Installation
+
+1. Install sqlite3 in your system, it must be accessible via `dlopen`
+2. Install this composer package to use KSQLite class inside your code
+
+See [Ubuntu/Debian installation guide](docs/install_deb.md) for more details.
+
+```bash
+$ composer require quasilyte/ksqlite
+```
+
 ## Examples
 
 * [quick_start.php](examples/quick_start.php) - a simple overview of the API basics
