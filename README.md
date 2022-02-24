@@ -16,12 +16,9 @@ Below is a platform-agnostic overview.
 # 1. Install the composer package itself.
 $ composer require quasilyte/ksqlite
 
-# 2. Install libsqlite3 into your system.
-# We need libsqlite3.so/libsqlite3.dll/libsqlite.dylib files to be available.
-
-# 3. Make sure your system dynamic library loader can find the library
-# with "libsqlite3" path (without suffixes).
-# MacOS and Linux use dlopen(), Windows uses LoadLibrary.
+# 2. Run the helper script and follow its instructions.
+# If everything goes well, it will tell you how to finish the installation.
+$ php -f locate_lib.php
 ```
 
 > Note: KPHP doesn't work on Windows yet.
