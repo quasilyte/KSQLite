@@ -8,6 +8,21 @@ KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 * [prepared_statements.php](examples/prepared_statements.php) - how to re-use a single statement for multiple queries
 * [transactions.php](examples/transactions.php) - how to use transactions plus some best practices
 
+Running examples with PHP:
+
+```bash
+php -d opcache.enable_cli=1\
+    -d opcache.preload=./examples/preload.php\
+    -f ./examples/transactions.php
+```
+
+Running examples with KPHP:
+
+```bash
+kphp --enable-ffi --mode cli --composer-root $(pwd)\
+     ./examples/transactions.php
+```
+
 ## API reference
 
 All functions report error with `false` return value (operation status).
