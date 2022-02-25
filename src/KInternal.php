@@ -57,4 +57,14 @@ class KInternal {
       return 'unknown';
     }
   }
+
+  public static function paramsFromArray(array $params): array {
+    $bind_params = [];
+    $n = 1;
+    foreach ($params as $p) {
+      $bind_params[$n] = $p;
+      $n++; 
+    }
+    return $bind_params;
+  }
 }

@@ -53,6 +53,19 @@ class KSQLiteParamsBinder {
     $this->params[$key] = $value;
   }
 
+  /**
+   * @param array $values array of arrays for variables binding
+   */
+  public function bindFromArray(array $values): bool {
+    if ($binder->query_index >= count($values)) {
+      return false; // No more rows to insert, stop now
+    }
+    foreach ($values[$this->query_index] as $k => $v) {
+      $this->bind($k, $v);
+    }
+    return true; // Parameters bound, execute the query
+  }
+
   public function _reset() {
     $this->params = [];
   }

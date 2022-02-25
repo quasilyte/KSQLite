@@ -46,6 +46,10 @@ class KSQLite {
     return KInternal::columnTypeName($type);
   }
 
+  public static function paramsFromArray(array $params): array {
+    return KInternal::paramsFromArray($params);
+  }
+
   public function open(string $filename): bool {
     $db = $this->lib->new('struct sqlite3*');
     $retcode = $this->lib->sqlite3_open($filename, \FFI::addr($db));
