@@ -1,14 +1,13 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/helpers.php'; // KPHP constant
 
 use KSQLite\KSQLite;
 use KSQLite\KSQLiteQueryContext;
 
 // Before using KSQLite, it's important to load the FFI definitions once.
 // For KPHP, this call can be placed in the beginning of your script.
-if (KPHP) {
+if (defined('KPHP_COMPILER_VERSION')) {
   KSQLite::loadFFI();
 }
 
@@ -101,3 +100,7 @@ foreach ($rows as $row) {
 }
 
 echo "OK\n";
+
+function handle_error(int $line, string $op, string $error) {
+  die("line $line: error: $op: $error\n");
+}

@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/helpers.php'; // KPHP constant
 
 use KSQLite\KSQLite;
 use KSQLite\KSQLiteQueryContext;
@@ -16,7 +15,7 @@ use KSQLite\KSQLiteParamsBinder;
 //
 // Then visit http://localhost:8888/examples/simple_site.php in your browser.
 
-if (KPHP) { KSQLite::loadFFI(); }
+if (defined('KPHP_COMPILER_VERSION')) { KSQLite::loadFFI(); }
 
 try {
   $err = main();

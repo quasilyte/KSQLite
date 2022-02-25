@@ -1,13 +1,12 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/helpers.php'; // KPHP constant
 
 use KSQLite\KSQLite;
 use KSQLite\KSQLiteQueryContext;
 use KSQLite\KSQLiteParamsBinder;
 
-if (KPHP) { KSQLite::loadFFI(); }
+if (defined('KPHP_COMPILER_VERSION')) { KSQLite::loadFFI(); }
 
 $db = new KSQLite();
 
@@ -103,3 +102,7 @@ function do_with_transaction(KSQLite $db, callable $fn): bool {
 }
 
 echo "OK\n";
+
+function handle_error(int $line, string $op, string $error) {
+  die("line $line: error: $op: $error\n");
+}
