@@ -30,7 +30,7 @@ run something like this to make it discoverable (unix):
 Then install the composer library itself:
 
 ```bash
-$ composer install quasilyte/ksqlite
+$ composer require quasilyte/ksqlite
 ```
 
 Notes:
