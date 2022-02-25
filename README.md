@@ -4,29 +4,39 @@ KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 
 ## Installation
 
-There are two steps:
+Since this is a FFI library, it needs a dynamic library available during the run time.
 
-1. Install libsqlite3 in your system, it must be accessible via `dlopen`
-2. Install this composer package to use KSQLite class inside your code
+Installation steps:
 
-First of, install a sqlite3 package for your system.
+1. Install libsqlite3 in your system (if you don't have it already)
+2. Locate the library file and place in under `./ffilibs/libsqlite3`
+3. Install this composer package to use KSQLite classes inside your code
 
-Then run `php -f locate_lib.php` [script](locate_lib.php).
-If everything goes well, it will tell you how to finish the installation.
+Depending on your system, you need to find `libsqlite3.so`, `libsqlite3.dylib`
+or `libsqlite3.dll` file. Then you can copy it to the application root `ffilibs` folder
+under the `libsqlite3` name (note: no prefixes).
 
-Otherwise, use one of the detailed guides below:
+If you're having difficulties locating the library file, use a helper script:
 
-* [Ubuntu/Debian installation guide](docs/install_deb.md)
-* [MacOS installation guide](docs/install_macos.md)
+```bash
+$ php -f locate_lib.php
+library candidate: /lib/x86_64-linux/libsqlite3.so.0
+library candidate: /lib/x86_64-linux/libsqlite3.so
 
-> Note: KPHP doesn't work on Windows yet.
+run something like this to make it discoverable (unix):
+	mkdir -p ffilibs && ln -s /lib/x86_64-linux/libsqlite3.so ./ffilibs/libsqlite3
+```
 
-When you're sure that your system has sqlite and KSQLite library can locate
-`libsqlite3`, install a composer package normally:
+Then install the composer library itself:
 
 ```bash
 $ composer install quasilyte/ksqlite
 ```
+
+Notes:
+
+* If you want to place library files/links globally, make `./ffilibs` a symlink
+* You'll probably want to add `ffilibs/` to your gitignore
 
 ## Examples
 

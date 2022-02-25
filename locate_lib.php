@@ -8,24 +8,38 @@ if (!function_exists('str_contains')) {
   }
 }
 
-$err = install_library($libname);
+[$libs, $err] = locate_library($libname);
 if ($err) {
-  die("error: $err");
+  die("error: $err\n");
 }
+if (count($libs) === 0) {
+  die("can't locate $libname, maybe it's not installed\n");
+}
+$lib_link = '';
+foreach ($libs as $lib) {
+  echo "library candidate: $lib\n";
+  $lib_link = $lib;
+}
+echo "\n";
+echo "run something like this to make it discoverable (unix):\n";
+echo "\tmkdir -p ffilibs && ln -s $lib_link ./ffilibs/$libname\n";
 
-function install_library(string $name): string {
+function locate_library(string $name) {
   $sys = strtoupper(php_uname('s'));
   if ($sys === 'LINUX') {
-    return install_library_linux($name);
+    return locate_library_linux($name);
   }
-  return "can't install for $sys system";
+  return tuple([], "can't locate libraries on $sys system");
 }
 
-function install_library_linux(string $name): string {
+function locate_library_linux(string $name) {
   $key = strtolower($name) . '.so';
-  $ldconfig_out = shell_exec('ldconfig -p');
-  if (!is_string($ldconfig_out)) {
-    return 'failed to run ldconfig';
+  [$ldconfig_out, $err] = exec_command(
+    ['ldconfig', '/usr/sbin/ldconfig', '/sbin/ldconfig', '/bin/ldconfig'],
+    '-p'
+  );
+  if ($err) {
+    return tuple([], $err);
   }
   $lines = explode("\n", $ldconfig_out);
   $candidates = [];
@@ -40,24 +54,19 @@ function install_library_linux(string $name): string {
       $candidates[$lib] = $link;
     }
   }
-  $selected_link = '';
-  foreach ($candidates as $lib => $link) {
-    if (!preg_match('/\.\d+$/', $lib)) {
-      $selected_link = $link;
-      break;
+  return tuple($candidates, '');
+}
+
+#ifndef KPHP
+function tuple(...$args) { return $args; }
+#endif
+
+function exec_command(array $commands, string $args) {
+  foreach ($commands as $cmd) {
+    $result = shell_exec("$cmd $args");
+    if (is_string($result)) {
+      return tuple($result, '');
     }
-    $selected_link = $link;
   }
-  if (!$selected_link) {
-    return "can't find $name library in your system";
-  }
-  $dir = dirname($selected_link);
-  $new_link_name = "$dir/$name";
-  if (file_exists($new_link_name)) {
-    echo "$new_link_name already exists, you're ready to go\n";
-  } else {
-    echo "Run this command to create a suitable library link:\n";
-    echo "$ sudo ln -s $selected_link $new_link_name\n";
-  }
-  return '';
+  return tuple('', "can't exec " . implode('/', $commands));
 }
