@@ -38,16 +38,27 @@ class KSQLite {
     }
   }
 
-  public static function loadFFI() {
-    \FFI::load(__DIR__ . '/sqlite.h');
+  public static function loadFFI(): bool {
+    \FFI::load(__DIR__ . '/sqlite.h') !== null;
   }
 
   public static function columnTypeName(int $type): string {
     return KInternal::columnTypeName($type);
   }
 
-  public static function paramsFromArray(array $params): array {
-    return KInternal::paramsFromArray($params);
+  /**
+   * paramsFromList turns an array into a bind array.
+   *
+   * In other words, array like ['x', 10] becomes [1 => 'x', 2 => 10];
+   *
+   * It also works with associative arrays:
+   *    ['a' => 'first', 'b' => 'second'] => [1 => 'first', 2 => 'second']
+   *
+   * @param array $params a list-like array of bind values
+   * @return array array of bind vars suitable for binding
+   */
+  public static function paramsFromList(array $params): array {
+    return KInternal::paramsFromList($params);
   }
 
   public function open(string $filename): bool {
