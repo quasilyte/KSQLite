@@ -54,7 +54,11 @@ function main(): string {
     }
   }
 
-  [$tasks, $ok] = $db->fetch('SELECT * FROM app_tasks');
+  $select_tasks = 'SELECT *
+                   FROM app_tasks
+                   ORDER BY task_creation_time DESC
+                   LIMIT 100';
+  [$tasks, $ok] = $db->fetch($select_tasks);
   if (!$ok) {
     return $db->getLastError();
   }

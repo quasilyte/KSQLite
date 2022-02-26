@@ -95,10 +95,7 @@ function do_with_transaction(KSQLite $db, callable $fn): bool {
     $db->exec('ROLLBACK');
     throw $e;
   }
-  if ($commit) {
-    return $db->exec('COMMIT');
-  }
-  return $db->exec('ROLLBACK');
+  return $db->exec($commit ? 'COMMIT' : 'ROLLBACK');
 }
 
 echo "OK\n";

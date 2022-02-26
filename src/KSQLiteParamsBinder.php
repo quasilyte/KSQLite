@@ -54,10 +54,50 @@ class KSQLiteParamsBinder {
   }
 
   /**
+   * bindFromList is a helper method for binding numeric params from lists.
+   *
+   * You usually use it inside params binding callback like this:
+   *
+   *    $db->execPrepared($query, function(KSQLiteParamsBinder $b) use ($vars) {
+   *      return $b->bindFromList($vars);
+   *    });
+   *
+   * For a query with ?1 ?2 parameters, this could be a bind array:
+   *    [['a', 10], ['b', 20]]
+   *
+   * @param array $values array of list-like arrays for variables binding
+   * @return bool whether params were bound
+   */
+  public function bindFromList(array $values): bool {
+    if ($this->query_index >= count($values)) {
+      return false; // No more rows to insert, stop now
+    }
+    foreach ($values[$this->query_index] as $i => $v) {
+      $this->bind($i + 1, $v);
+    }
+    return true; // Parameters bound, execute the query
+  }
+
+  /**
+   * bindFromArray is a helper method for binding params from arrays.
+   *
+   * You usually use it inside params binding callback like this:
+   *
+   *    $db->execPrepared($query, function(KSQLiteParamsBinder $b) use ($vars) {
+   *      return $b->bindFromArray($vars);
+   *    });
+   *
+   * For a query with ?1 ?1 parameters, this could be a bind array:
+   *    [[1 => 'a', 2 => 10], [1 => 'b', 2 => 20]]
+   *
+   * For a query with :p1 :p2 parameters, this could be a bind array:
+   *    [[':p1' => 'a', ':p2' => 10], [':p1' => 'b', ':p2' => 20]]
+   *
    * @param array $values array of arrays for variables binding
+   * @return bool whether params were bound
    */
   public function bindFromArray(array $values): bool {
-    if ($binder->query_index >= count($values)) {
+    if ($this->query_index >= count($values)) {
       return false; // No more rows to insert, stop now
     }
     foreach ($values[$this->query_index] as $k => $v) {

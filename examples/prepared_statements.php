@@ -50,16 +50,11 @@ if (!$ok) {
   handle_error(__LINE__, 'exec/insert', $db->getLastError());
 }
 
-$values = [rand(0, 999999), rand(0, 999999)];
+$values = [[rand(0, 999999)], [rand(0, 999999)]];
 $ok = $db->execPrepared(
   'INSERT INTO fav_numbers(num_value) VALUES(?1)',
   function(KSQLiteParamsBinder $binder) use ($values) {
-    if ($binder->query_index >= count($values)) {
-      return false; // No more rows to insert, stop now
-    }
-    // Bind ?1 to the specified value.
-    $binder->bind(1, $values[$binder->query_index]);
-    return true; // Parameters bound, execute the query
+    return $binder->bindFromList($values);
   }
 );
 if (!$ok) {
@@ -67,7 +62,6 @@ if (!$ok) {
 }
 
 $values = [rand(-999999, -1), rand(-999999, -1)];
-
 // Using named params with execPrepared.
 $ok = $db->execPrepared(
   'INSERT INTO fav_numbers(num_value) VALUES(:num_value)',

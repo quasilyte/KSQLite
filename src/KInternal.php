@@ -58,7 +58,7 @@ class KInternal {
     }
   }
 
-  public static function paramsFromArray(array $params): array {
+  public static function paramsFromList(array $params): array {
     $bind_params = [];
     $n = 1;
     foreach ($params as $p) {
