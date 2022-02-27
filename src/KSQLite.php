@@ -2,6 +2,8 @@
 
 namespace KSQLite;
 
+use KFinalize\KFinalize;
+
 class KSQLite {
   public const TYPE_INTEGER = 1;
   public const TYPE_REAL = 2;
@@ -18,10 +20,20 @@ class KSQLite {
 
   private string $last_error = '';
   
+  /**
+   * @param bool $auto_close whether to close db connection in the end of the script
+   *             if you need to have a full control or you're planning to create a lot
+   *             of KSQLite object instances, consider using a false value.
+   *             For most normal usages it's advised to keep this param as true.
+   */
   public function __construct(bool $auto_close = true) {
     $this->lib = \FFI::scope('sqlite');
     if ($auto_close) {
-      KShutdownHandler::pushDatabase($this);
+      KFinalize::push(function() {
+        // Even if $db is closed already, it's OK to do
+        // it again ($db will remember its state).
+        $this->close();
+      });
     }
 
     // See https://github.com/VKCOM/kphp/issues/457

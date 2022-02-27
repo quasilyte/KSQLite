@@ -11,7 +11,8 @@
     ],
     "require": {
         "php": ">=7.4",
-        "vkcom/kphp-polyfills": "^1.0"
+        "vkcom/kphp-polyfills": "^1.0",
+        "quasilyte/kfinalize": "1.0.0"
     },
     "autoload": {
         "psr-4": {
