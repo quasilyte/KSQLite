@@ -39,7 +39,7 @@ class KSQLite {
   }
 
   public static function loadFFI(): bool {
-    \FFI::load(__DIR__ . '/sqlite.h') !== null;
+    return \FFI::load(__DIR__ . '/sqlite.h') !== null;
   }
 
   public static function columnTypeName(int $type): string {
