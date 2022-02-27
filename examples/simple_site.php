@@ -15,7 +15,7 @@ use KSQLite\KSQLiteParamsBinder;
 //
 // Then visit http://localhost:8888/examples/simple_site.php in your browser.
 
-if (defined('KPHP_COMPILER_VERSION')) { KSQLite::loadFFI(); }
+if (KPHP_COMPILER_VERSION) { KSQLite::loadFFI(); }
 
 try {
   $err = main();

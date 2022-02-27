@@ -7,7 +7,7 @@ use KSQLite\KSQLiteQueryContext;
 
 // Before using KSQLite, it's important to load the FFI definitions once.
 // For KPHP, this call can be placed in the beginning of your script.
-if (defined('KPHP_COMPILER_VERSION')) {
+if (KPHP_COMPILER_VERSION) {
   KSQLite::loadFFI();
 }
 

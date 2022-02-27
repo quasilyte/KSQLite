@@ -6,7 +6,7 @@ use KSQLite\KSQLite;
 use KSQLite\KSQLiteQueryContext;
 use KSQLite\KSQLiteParamsBinder;
 
-if (defined('KPHP_COMPILER_VERSION')) { KSQLite::loadFFI(); }
+if (KPHP_COMPILER_VERSION) { KSQLite::loadFFI(); }
 
 $db = new KSQLite();
 
