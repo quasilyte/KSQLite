@@ -9,8 +9,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use KSQLite\KSQLite;
 
-if (!chdir(__DIR__)) {
-  die("failed chdir to " . __DIR__ . "\n");
+$root_path = __DIR__ . '/../';
+if (!chdir($root_path)) {
+  die("failed chdir to $root_path\n");
 }
 if (!KSQLite::loadFFI()) {
   die("failed to preload FFI\n");
