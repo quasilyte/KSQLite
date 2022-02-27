@@ -13,6 +13,9 @@ class KSQLite {
 
   private bool $closed = true;
 
+  private int $num_allocated = 0;
+  private int $num_deallocated = 0;
+
   /** @var ffi_scope<sqlite> */
   private $lib;
   /** @var ffi_cdata<sqlite, struct sqlite3*> */
@@ -30,6 +33,11 @@ class KSQLite {
     $this->lib = \FFI::scope('sqlite');
     if ($auto_close) {
       KFinalize::push(function() {
+        if ($this->num_allocated > $this->num_deallocated) {
+          // This can happen only if there was an exit() or die()
+          // during the user-provided callbacks execution.
+          fprintf(STDERR, "WARNING: KSQLite: allocated more than deallocated, memory leaks are possible\n");
+        }
         // Even if $db is closed already, it's OK to do
         // it again ($db will remember its state).
         $this->close();
@@ -413,6 +421,8 @@ class KSQLite {
       return false;
     }
 
+    $this->num_allocated++;
+
     /** @var \Throwable $exception */
     $exception = null;
     $ok = true;
@@ -424,6 +434,7 @@ class KSQLite {
     }
 
     // Free allocated resources.
+    $this->num_deallocated++;
     $this->lib->sqlite3_finalize($stmt);
 
     if ($exception !== null) {
