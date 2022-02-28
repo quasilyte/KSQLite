@@ -288,9 +288,9 @@ class KSQLite {
         return;
       }
       if ($assoc) {
-        $result->values[] = $ctx->rowDataAssoc();
+        $result->values = $ctx->rowDataAssoc();
       } else {
-        $result->values[] = $ctx->rowData();
+        $result->values = $ctx->rowData();
       }
     });
     return tuple($result->values, $ok);

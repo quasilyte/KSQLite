@@ -7,7 +7,7 @@ use KSQLite\KSQLiteQueryContext;
 use KSQLite\KSQLiteParamsBinder;
 
 // To run with PHP:
-// $ php -d opcache.preload=./examples/preload.php -S localhost:8888
+// $ php -d opcache.preload=preload.php -S localhost:8888
 //
 // To run with KPHP:
 // $ kphp --enable-ffi --composer-root $(pwd) ./examples/simple_site.php

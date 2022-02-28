@@ -49,7 +49,7 @@ Running examples with PHP:
 
 ```bash
 $ php -d opcache.enable_cli=1\
-      -d opcache.preload=./examples/preload.php\
+      -d opcache.preload=preload.php\
       -f ./examples/transactions.php
 ```
 
