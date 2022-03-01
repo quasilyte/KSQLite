@@ -81,7 +81,7 @@ var_dump(['count after insert and commit' => $count]);
 
 /**
  * @param KSQLite $db
- * @param callable(KSQLite):boolean
+ * @param callable(KSQLite):boolean $fn
  */
 function do_with_transaction(KSQLite $db, callable $fn): bool {
   if (!$db->exec('BEGIN')) {
