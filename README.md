@@ -1,5 +1,7 @@
 # KSQLite
 
+![](docs/logo.png)
+
 KSQLite is a FFI-based SQLite library that can be used in both PHP and KPHP.
 
 ## Installation
