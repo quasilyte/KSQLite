@@ -21,6 +21,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "9.5.16",
-        "vkcom/kphpunit": "dev-master"
+        "vkcom/kphpunit": "v1.0.0"
     }
 }

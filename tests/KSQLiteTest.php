@@ -70,9 +70,7 @@ class KSQLiteTest extends TestCase {
 
   private function assertNoError(bool $status) {
     if (!$status) {
-      // TODO: implement fail() in kphpunit and use it here?
-      // See https://github.com/VKCOM/kphpunit/issues/2
-      $this->assertSame('', self::$db->getLastError());
+      $this->fail(self::$db->getLastError());
     }
   }
 
