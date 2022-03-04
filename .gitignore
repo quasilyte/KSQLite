@@ -4,3 +4,4 @@ ffilibs/
 
 composer.lock
 testdb
+benchdb
