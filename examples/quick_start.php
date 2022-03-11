@@ -54,7 +54,6 @@ if (!$ok) {
 echo "count=$count\n";
 
 if ($count === 0) {
-  echo "DB is empty, inserting values...\n";
   $rows = [
     ['PHP', 1995, 1.0],
     ['KPHP', 2014, 2.0],

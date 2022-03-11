@@ -1,0 +1,19 @@
+name: PHP
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.1'
+        # msgpack needs to be disabled
+        # See https://github.com/VKCOM/kphp-polyfills/issues/41
+        extensions: zip, :msgpack
+        tools: composer
+    - name: Test
+      run: |
+        make ci-test

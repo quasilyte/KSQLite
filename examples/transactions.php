@@ -24,6 +24,10 @@ if (!$db->exec($query)) {
     handle_error(__LINE__, 'exec/create table', $db->getLastError());
 }
 
+if (!$db->exec('DELETE FROM fav_numbers')) {
+  handle_error(__LINE__, 'exec/delete', $db->getLastError());
+}
+
 [$count, $ok] = $db->fetchColumn('SELECT COUNT(*) FROM fav_numbers');
 if (!$ok) {
   handle_error(__LINE__, 'fetchColumn', $db->getLastError());
