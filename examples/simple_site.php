@@ -125,7 +125,7 @@ function build_page_html(array $tasks) {
     <head>
       $css
     </head>
-    <body>
+    <body><div class='container'>
       <fieldset>
         <legend>Manage tasks</legend>
         <form action='simple_site.php' method='post'>
@@ -150,7 +150,7 @@ function build_page_html(array $tasks) {
         </tr>
         $rows_html
       </table>
-    </body>
+    </div></body>
   ";
 
   return $html;
