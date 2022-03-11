@@ -15,14 +15,25 @@ if ($err) {
 if (count($libs) === 0) {
   die("can't locate $libname, maybe it's not installed\n");
 }
-$lib_link = '';
-foreach ($libs as $lib) {
-  echo "library candidate: $lib\n";
-  $lib_link = $lib;
+$q_mode = !empty($argv[1]) && $argv[1] === '-q';
+if ($q_mode) {
+  $k = array_key_last($libs);
+  if ($k === null) {
+    die("error: found no library candidates\n");
+  } else {
+    $lib_link = $libs[$k];
+    echo "$lib_link\n";
+  }
+} else {
+  $lib_link = '';
+  foreach ($libs as $lib) {
+    echo "library candidate: $lib\n";
+    $lib_link = $lib;
+  }
+  echo "\n";
+  echo "run something like this to make it discoverable (unix):\n";
+  echo "\tmkdir -p ffilibs && sudo ln -s $lib_link ./ffilibs/$libname\n";
 }
-echo "\n";
-echo "run something like this to make it discoverable (unix):\n";
-echo "\tmkdir -p ffilibs && ln -s $lib_link ./ffilibs/$libname\n";
 
 function locate_library(string $name) {
   $sys = strtoupper(php_uname('s'));

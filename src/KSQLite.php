@@ -380,7 +380,7 @@ class KSQLite {
       } else if (is_string($value)) {
         $value_type = KSQLite::TYPE_TEXT;
       } else if (is_array($value) && count($value) === 2) {
-        $value_type = $value[0];
+        $value_type = (int)$value[0];
         $converted_value = $value[1];
       } else {
         $this->last_error = "binding $key to unsupported value of type " . gettype($value);

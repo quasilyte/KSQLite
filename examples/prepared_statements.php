@@ -50,7 +50,7 @@ if (!$ok) {
   handle_error(__LINE__, 'exec/insert', $db->getLastError());
 }
 
-$values = [[rand(0, 999999)], [rand(0, 999999)]];
+$values = [[5423], [392]];
 $ok = $db->execPrepared(
   'INSERT INTO fav_numbers(num_value) VALUES(?1)',
   function(KSQLiteParamsBinder $binder) use ($values) {
@@ -61,7 +61,7 @@ if (!$ok) {
   handle_error(__LINE__, 'execPrepared/insert', $db->getLastError());
 }
 
-$values = [rand(-999999, -1), rand(-999999, -1)];
+$values = [-9889, -392];
 // Using named params with execPrepared.
 $ok = $db->execPrepared(
   'INSERT INTO fav_numbers(num_value) VALUES(:num_value)',
