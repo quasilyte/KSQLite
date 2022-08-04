@@ -18,7 +18,7 @@ Installation steps:
 
 Depending on your system, you need to find `libsqlite3.so`, `libsqlite3.dylib`
 or `libsqlite3.dll` file. Then you can copy it to the application root `ffilibs` folder
-under the `libsqlite3` name (note: no prefixes).
+under the `libsqlite3` name (note: no extension suffixes).
 
 If you're having difficulties locating the library file, use a helper script:
 
