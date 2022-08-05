@@ -61,7 +61,7 @@ Running examples with KPHP:
 
 ```bash
 # Step 1: compile the example:
-$ kphp --enable-ffi --mode cli --composer-root $(pwd) ./examples/transactions.php
+$ kphp --mode cli --composer-root $(pwd) ./examples/transactions.php
 # Step 2: run the binary:
 $ ./kphp_out/cli
 ```

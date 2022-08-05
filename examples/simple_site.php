@@ -10,7 +10,7 @@ use KSQLite\KSQLiteParamsBinder;
 // $ php -d opcache.preload=preload.php -S localhost:8888
 //
 // To run with KPHP:
-// $ kphp --enable-ffi --composer-root $(pwd) ./examples/simple_site.php
+// $ kphp --composer-root $(pwd) ./examples/simple_site.php
 // $ ./kphp_out/server --http-port 8888
 //
 // Then visit http://localhost:8888/examples/simple_site.php in your browser.
