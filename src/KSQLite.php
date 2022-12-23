@@ -83,7 +83,7 @@ class KSQLite {
     $db = $this->lib->new('struct sqlite3*');
     $retcode = $this->lib->sqlite3_open($filename, \FFI::addr($db));
     if ($retcode !== KInternal::OK) {
-      $this->last_error = $this->lib->sqlite3_errstr($retcode);
+      $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
       return false;
     }
     $this->closed = false;
@@ -99,7 +99,7 @@ class KSQLite {
 
     $retcode = $this->lib->sqlite3_close($this->db);
     if ($retcode !== KInternal::OK) {
-      $this->last_error = $this->lib->sqlite3_errstr($retcode);
+      $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
       return false;
     }
     return true;
@@ -131,7 +131,7 @@ class KSQLite {
     return $this->doQuery($sql, $bind_params, function($stmt, int $query_index) {
       $retcode = $this->lib->sqlite3_step($stmt);
         if ($retcode !== KInternal::DONE && $retcode !== KInternal::ROW) {
-          $this->last_error = $this->lib->sqlite3_errstr($retcode);
+          $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
           return false;
         }
         return true;
@@ -315,12 +315,12 @@ class KSQLite {
           // Using this stmt object not for the first time: need to reset it.
           $retcode = $this->lib->sqlite3_reset($stmt);
           if ($retcode !== KInternal::OK) {
-            $this->last_error = $this->lib->sqlite3_errstr($retcode);
+            $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
             return false;
           }
           $retcode = $this->lib->sqlite3_clear_bindings($stmt);
           if ($retcode !== KInternal::OK) {
-            $this->last_error = $this->lib->sqlite3_errstr($retcode); 
+            $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
             return false;
           }
         }
@@ -415,7 +415,7 @@ class KSQLite {
     $stmt = $this->lib->new('struct sqlite3_stmt*');
     $retcode = $this->lib->sqlite3_prepare_v2($this->db, $sql, strlen($sql), \FFI::addr($stmt), null);
     if ($retcode !== KInternal::OK) {
-      $this->last_error = $this->lib->sqlite3_errstr($retcode);
+      $this->last_error = (string)$this->lib->sqlite3_errstr($retcode);
       return false;
     }
 

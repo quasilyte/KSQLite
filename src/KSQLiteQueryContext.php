@@ -125,7 +125,7 @@ class KSQLiteQueryContext {
     // load them from the sqlite.
     if (count($this->column_names) === 0) {
       for ($i = 0; $i < $this->row_data_count; $i++) {
-        $name = $this->lib->sqlite3_column_name($this->stmt, $i);
+        $name = (string)$this->lib->sqlite3_column_name($this->stmt, $i);
         $this->column_names[] = $name;
       }
     }
